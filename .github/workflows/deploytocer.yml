@@ -4,7 +4,7 @@ on:
   pull_request:
     branches:
       - master
-    types: [closed]  # Trigger only when the PR is closed (merged or rejected)
+    types: [closed]  # Trigger only when the PR is closed 
 
 jobs:
   build:
