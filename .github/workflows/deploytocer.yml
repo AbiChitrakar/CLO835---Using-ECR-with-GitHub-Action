@@ -33,13 +33,8 @@ jobs:
         WEBAPP_IMAGE_TAG: ${{ secrets.WEBAPP_IMAGE_TAG }}
         AWS_REGION: us-east-1  
 
-
       run: |
-        ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}  # Use the registry URL from the login action
         
-        echo "Logging into ECR..."
-        aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
-
         echo "Building MySQL Image..."
         docker build -t $ECR_REGISTRY/$MYSQL_ECR_REPOSITORY:$MYSQL_IMAGE_TAG ./mysql
 
