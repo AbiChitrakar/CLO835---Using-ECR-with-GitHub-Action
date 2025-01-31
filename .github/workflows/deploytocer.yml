@@ -31,6 +31,8 @@ jobs:
         MYSQL_IMAGE_TAG: ${{ secrets.MYSQL_IMAGE_TAG }}
         WEBAPP_ECR_REPOSITORY: ${{ secrets.WEBAPP_ECR_REPOSITORY }}
         WEBAPP_IMAGE_TAG: ${{ secrets.WEBAPP_IMAGE_TAG }}
+        AWS_REGION: us-east-1  
+
 
       run: |
         ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}  # Use the registry URL from the login action
