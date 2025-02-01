@@ -77,7 +77,6 @@ jobs:
             echo "Logging into Amazon ECR on EC2..."
             AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com
-            ECR_REGISTRY=$AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com
 
           # Step 2: Pull Docker images
             echo "Pulling MySQL image from ECR.."
