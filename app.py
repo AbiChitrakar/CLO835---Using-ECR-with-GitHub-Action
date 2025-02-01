@@ -4,10 +4,6 @@ import os
 import random
 import argparse
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 53e0fb8 (Work in Progress for Terraform code)
 app = Flask(__name__)
 
 DBHOST = os.environ.get("DBHOST") or "localhost"
@@ -17,10 +13,6 @@ DATABASE = os.environ.get("DATABASE") or "employees"
 COLOR_FROM_ENV = os.environ.get('APP_COLOR') or "lime"
 DBPORT = int(os.environ.get("DBPORT"))
 
-<<<<<<< HEAD
-# Create a connection to the MySQL database
-=======
->>>>>>> 53e0fb8 (Work in Progress for Terraform code)
 db_conn = connections.Connection(
     host= DBHOST,
     port=DBPORT,
@@ -32,10 +24,6 @@ db_conn = connections.Connection(
 output = {}
 table = 'employee';
 
-<<<<<<< HEAD
-# Define the supported color codes
-=======
->>>>>>> 53e0fb8 (Work in Progress for Terraform code)
 color_codes = {
     "red": "#e74c3c",
     "green": "#16a085",
@@ -46,11 +34,6 @@ color_codes = {
     "lime": "#C1FF9C",
 }
 
-
-<<<<<<< HEAD
-# Create a string of supported colors
-=======
->>>>>>> 53e0fb8 (Work in Progress for Terraform code)
 SUPPORTED_COLORS = ",".join(color_codes.keys())
 
 # Generate a random color
