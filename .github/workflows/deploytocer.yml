@@ -16,6 +16,12 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
+      - name: Set up SSH key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
@@ -44,3 +50,48 @@ jobs:
 
           echo "Pushing WebApp Image to ECR..."
           docker push $ECR_REGISTRY/$WEBAPP_ECR_REPOSITORY:$WEBAPP_IMAGE_TAG
+
+      - name: SSH into EC2 and run commands
+        run: |
+          echo "Connecting to EC2 instance"
+          ssh -i ~/.ssh/id_rsa ec2-user@${{ secrets.PUBLIC_IP }} << 'EOF'
+
+          # Step 1: Login to Amazon ECR
+            echo "Logging into Amazon ECR..."
+            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
+
+          # Step 2: Pull Docker images
+            echo "Pulling MySQL image from ECR..."
+            docker pull $ECR_REGISTRY/$MYSQL_ECR_REPOSITORY:$MYSQL_IMAGE_TAG
+
+            echo "Pulling WebApp image from ECR..."
+            docker pull $ECR_REGISTRY/$WEBAPP_ECR_REPOSITORY:$WEBAPP_IMAGE_TAG
+
+            # Step 3: Create a custom Docker network
+            echo "Creating Docker network 'mynetwork'..."
+            docker network create mynetwork
+
+            # Step 4: Run the MySQL container
+            echo "Running MySQL container..."
+            docker run -d --network mynetwork --name mysql-container -e MYSQL_ROOT_PASSWORD=root $ECR_REGISTRY/$MYSQL_ECR_REPOSITORY:$MYSQL_IMAGE_TAG
+
+            # Step 5: Set the DATABASE environment variable
+            export DATABASE=employees
+
+            # Step 6: Run WebApp containers on different ports with DB environment variables
+            echo "Running WebApp container on port 8081..."
+            docker run -d --network mynetwork --name webapp-container-1 -p 8081:80 \
+              -e DBHOST=mysql-container -e DBPORT=3306 -e DBUSER=root -e DBPWD=pw -e APP_COLOR=blue \
+              $ECR_REGISTRY/$WEBAPP_ECR_REPOSITORY:$WEBAPP_IMAGE_TAG
+
+            echo "Running WebApp container on port 8082..."
+            docker run -d --network mynetwork --name webapp-container-2 -p 8082:80 \
+              -e DBHOST=mysql-container -e DBPORT=3306 -e DBUSER=root -e DBPWD=pw -e APP_COLOR=blue \
+              $ECR_REGISTRY/$WEBAPP_ECR_REPOSITORY:$WEBAPP_IMAGE_TAG
+
+            echo "Running WebApp container on port 8083..."
+            docker run -d --network mynetwork --name webapp-container-3 -p 8083:80 \
+              -e DBHOST=mysql-container -e DBPORT=3306 -e DBUSER=root -e DBPWD=pw -e APP_COLOR=blue \
+              $ECR_REGISTRY/$WEBAPP_ECR_REPOSITORY:$WEBAPP_IMAGE_TAG
+          EOF
+
