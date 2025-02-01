@@ -15,7 +15,7 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v4
 
-    - name: Login to Amazon ECR
+    - name: Build, test, tag, and push images to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v1
       env:
@@ -23,15 +23,12 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
         AWS_REGION: us-east-1  
-
-    - name: Build, test, tag, and push images to Amazon ECR
-      env:
+        
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         MYSQL_ECR_REPOSITORY: ${{ secrets.MYSQL_ECR_REPOSITORY }}
         MYSQL_IMAGE_TAG: ${{ secrets.MYSQL_IMAGE_TAG }}
         WEBAPP_ECR_REPOSITORY: ${{ secrets.WEBAPP_ECR_REPOSITORY }}
         WEBAPP_IMAGE_TAG: ${{ secrets.WEBAPP_IMAGE_TAG }}
-        AWS_REGION: us-east-1  
 
       run: |
         
