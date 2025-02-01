@@ -46,6 +46,12 @@ jobs:
           docker push $ECR_REGISTRY/$WEBAPP_ECR_REPOSITORY:$WEBAPP_IMAGE_TAG
 
       - name: SSH into EC2 and run commands
+        env:
+            ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+            MYSQL_ECR_REPOSITORY: ${{ secrets.MYSQL_ECR_REPOSITORY }}
+            MYSQL_IMAGE_TAG: ${{ secrets.MYSQL_IMAGE_TAG }}
+            WEBAPP_ECR_REPOSITORY: ${{ secrets.WEBAPP_ECR_REPOSITORY }}
+            WEBAPP_IMAGE_TAG: ${{ secrets.WEBAPP_IMAGE_TAG }}
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
