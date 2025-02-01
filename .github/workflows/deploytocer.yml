@@ -51,7 +51,7 @@ jobs:
           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 400 ~/.ssh/id_rsa
           
-          echo "Connecting to EC2 instance"
+          echo "Connecting to EC2 instances"
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ec2-user@${{ secrets.PUBLIC_IP }} << 'EOF'
 
           # Step 1: Login to Amazon ECR
