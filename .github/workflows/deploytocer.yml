@@ -91,17 +91,15 @@ jobs:
 
             # Step 4: Run the MySQL container
             echo "Running MySQL container."
-            docker run -d --network mynetwork --name mysql-container -e MYSQL_ROOT_PASSWORD=root ${{ steps.login-ecr.outputs.registry }}/mysql-repo:v0.1
-            # Step 5: Set the DATABASE environment variable
-            export DATABASE=employees
+            docker run -d --network mynetwork --name mysql-container -e MYSQL_ROOT_PASSWORD=root MYSQL_DATABASE=employees ${{ steps.login-ecr.outputs.registry }}/mysql-repo:v0.1
 
             # Step 6: Run WebApp containers on different ports with DB environment variables
             echo "Running WebApp container on port 8081..."
-            docker run -d --network mynetwork --name webapp-container-1 -p 8081:8080 -e DBHOST=mysql-container -e DBPORT=3306 -e DBUSER=root -e DBPWD=pw -e APP_COLOR=blue ${{ steps.login-ecr.outputs.registry }}/webapp-repo:v0.1
+            docker run -d --network mynetwork --name webapp-container-1 -p 8081:8080 -e DBHOST=mysql-container -e DBPORT=3306 -e DBUSER=root -e DBPWD=pw -e DATABASE=employees -e APP_COLOR=blue ${{ steps.login-ecr.outputs.registry }}/webapp-repo:v0.1
 
             echo "Running WebApp container on port 8082..."
-            docker run -d --network mynetwork --name webapp-container-2 -p 8082:8080 -e DBHOST=mysql-container -e DBPORT=3306 -e DBUSER=root -e DBPWD=pw -e APP_COLOR=pink ${{ steps.login-ecr.outputs.registry }}/webapp-repo:v0.1
+            docker run -d --network mynetwork --name webapp-container-2 -p 8082:8080 -e DBHOST=mysql-container -e DBPORT=3306 -e DBUSER=root -e DBPWD=pw -e APP_COLOR=pink -e DATABASE=employees ${{ steps.login-ecr.outputs.registry }}/webapp-repo:v0.1
 
             echo "Running WebApp container on port 8083."
-            docker run -d --network mynetwork --name webapp-container-3 -p 8083:8080 -e DBHOST=mysql-container -e DBPORT=3306 -e DBUSER=root -e DBPWD=pw -e APP_COLOR=lime ${{ steps.login-ecr.outputs.registry }}/webapp-repo:v0.1
+            docker run -d --network mynetwork --name webapp-container-3 -p 8083:8080 -e DBHOST=mysql-container -e DBPORT=3306 -e DBUSER=root -e DBPWD=pw -e APP_COLOR=lime -e DATABASE=employees ${{ steps.login-ecr.outputs.registry }}/webapp-repo:v0.1
           EOF
