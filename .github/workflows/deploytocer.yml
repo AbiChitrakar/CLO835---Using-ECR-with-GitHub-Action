@@ -57,15 +57,14 @@ jobs:
           echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 400 ~/.ssh/id_rsa
 
+          echo "Connecting to EC2 instances"
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ec2-user@${{ secrets.PUBLIC_IP }} << 'EOF'
+
           mkdir -p ~/.aws
           echo "[default]" > ~/.aws/credentials
           echo "aws_access_key_id = ${{ secrets.AWS_ACCESS_KEY_ID }}" >> ~/.aws/credentials
           echo "aws_secret_access_key =  ${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> ~/.aws/credentials
           echo "aws_session_token =  ${{ secrets.AWS_SESSION_TOKEN }}" >> ~/.aws/credentials
-          echo "region = us-east-1" >> ~/.aws/config
-          
-          echo "Connecting to EC2 instances"
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ec2-user@${{ secrets.PUBLIC_IP }} << 'EOF'
 
           # Step 1: Login to Amazon ECR
             echo "Logging into Amazon ECR..."
