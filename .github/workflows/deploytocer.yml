@@ -91,7 +91,7 @@ jobs:
 
             # Step 4: Run the MySQL container
             echo "Running MySQL container."
-            docker run -d --network mynetwork --name mysql-container -e MYSQL_ROOT_PASSWORD=root MYSQL_DATABASE=employees ${{ steps.login-ecr.outputs.registry }}/mysql-repo:v0.1
+            docker run -d --network mynetwork --name mysql-container -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=employees ${{ steps.login-ecr.outputs.registry }}/mysql-repo:v0.1
 
             # Step 6: Run WebApp containers on different ports with DB environment variables
             echo "Running WebApp container on port 8081..."
