@@ -99,7 +99,7 @@ jobs:
               -e DBHOST=mysql-container -e DBPORT=3306 -e DBUSER=root -e DBPWD=pw -e APP_COLOR=blue \
               $ECR_REGISTRY/$WEBAPP_ECR_REPOSITORY:$WEBAPP_IMAGE_TAG
 
-            echo "Running WebApp container on port 8083..."
+            echo "Running WebApp container on port 8083."
             docker run -d --network mynetwork --name webapp-container-3 -p 8083:80 \
               -e DBHOST=mysql-container -e DBPORT=3306 -e DBUSER=root -e DBPWD=pw -e APP_COLOR=blue \
               $ECR_REGISTRY/$WEBAPP_ECR_REPOSITORY:$WEBAPP_IMAGE_TAG
