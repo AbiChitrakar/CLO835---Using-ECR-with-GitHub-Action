@@ -82,7 +82,7 @@ jobs:
             docker network create mynetwork
 
             # Step 4: Run the MySQL container
-            echo "Running MySQL container..."
+            echo "Running MySQL container."
             docker run -d --network mynetwork --name mysql-container -e MYSQL_ROOT_PASSWORD=root $ECR_REGISTRY/$MYSQL_ECR_REPOSITORY:$MYSQL_IMAGE_TAG
 
             # Step 5: Set the DATABASE environment variable
