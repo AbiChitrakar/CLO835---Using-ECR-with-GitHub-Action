@@ -16,12 +16,6 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Set up SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
@@ -54,7 +48,7 @@ jobs:
       - name: SSH into EC2 and run commands
         run: |
           echo "Connecting to EC2 instance"
-          ssh -i ~/.ssh/id_rsa ec2-user@${{ secrets.PUBLIC_IP }} << 'EOF'
+          ssh -o -i ~/.ssh/id_rsa ec2-user@${{ secrets.PUBLIC_IP }} << 'EOF'
 
           # Step 1: Login to Amazon ECR
             echo "Logging into Amazon ECR..."
