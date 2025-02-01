@@ -47,6 +47,10 @@ jobs:
 
       - name: SSH into EC2 and run commands
         run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 400 ~/.ssh/id_rsa
+          
           echo "Connecting to EC2 instance"
           ssh -o -i ~/.ssh/id_rsa ec2-user@${{ secrets.PUBLIC_IP }} << 'EOF'
 
