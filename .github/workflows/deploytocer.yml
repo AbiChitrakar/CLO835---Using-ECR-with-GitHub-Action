@@ -66,11 +66,14 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ec2-user@${{ secrets.PUBLIC_IP }} << 'EOF'
           sudo usermod -a -G docker ec2-user
 
-          id: login-ecr
-          uses: aws-actions/amazon-ecr-login@v1
 
           # Step 1: Login to Amazon ECR
             echo "Logging into Amazon ECR..."
+            aws configure set aws_access_key_id "${{ secrets.AWS_ACCESS_KEY_ID }}"
+            aws configure set aws_secret_access_key "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+            aws configure set aws_session_token "${{ secrets.AWS_SESSION_TOKEN }}"
+            aws configure set region us-east-1
+            
             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
 
           # Step 2: Pull Docker images
