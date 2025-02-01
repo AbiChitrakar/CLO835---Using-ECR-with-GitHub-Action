@@ -86,7 +86,7 @@ jobs:
             docker pull $ECR_REGISTRY/$WEBAPP_ECR_REPOSITORY:$WEBAPP_IMAGE_TAG
 
             # Step 3: Create a custom Docker network
-            echo "Creating Docker network 'mynetwork'.."
+            echo "Creating Docker network 'mynetwork'."
             docker network create mynetwork
 
             # Step 4: Run the MySQL container
