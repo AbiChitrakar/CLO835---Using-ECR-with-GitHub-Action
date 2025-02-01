@@ -71,7 +71,7 @@ jobs:
             aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
 
           # Step 2: Pull Docker images
-            echo "Pulling MySQL image from ECR..."
+            echo "Pulling MySQL image from ECR.."
             docker pull $ECR_REGISTRY/$MYSQL_ECR_REPOSITORY:$MYSQL_IMAGE_TAG
 
             echo "Pulling WebApp image from ECR..."
