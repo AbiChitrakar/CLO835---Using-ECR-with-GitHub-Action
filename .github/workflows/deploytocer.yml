@@ -73,8 +73,10 @@ jobs:
             aws configure set aws_secret_access_key "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
             aws configure set aws_session_token "${{ secrets.AWS_SESSION_TOKEN }}"
             aws configure set region us-east-1
-            
-            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
+
+            echo "Logging into Amazon ECR on EC2..."
+            AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+            aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com
 
           # Step 2: Pull Docker images
             echo "Pulling MySQL image from ECR.."
@@ -96,9 +98,7 @@ jobs:
 
             # Step 6: Run WebApp containers on different ports with DB environment variables
             echo "Running WebApp container on port 8081..."
-            docker run -d --network mynetwork --name webapp-container-1 -p 8081:80 \
-              -e DBHOST=mysql-container -e DBPORT=3306 -e DBUSER=root -e DBPWD=pw -e APP_COLOR=blue \
-              $ECR_REGISTRY/$WEBAPP_ECR_REPOSITORY:$WEBAPP_IMAGE_TAG
+            docker run -d --network mynetwork --name webapp-container-1 -p 8081:80 -e DBHOST=mysql-container -e DBPORT=3306 -e DBUSER=root -e DBPWD=pw -e APP_COLOR=blue $ECR_REGISTRY/$WEBAPP_ECR_REPOSITORY:$WEBAPP_IMAGE_TAG
 
             echo "Running WebApp container on port 8082..."
             docker run -d --network mynetwork --name webapp-container-2 -p 8082:80 \
