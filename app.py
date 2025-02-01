@@ -19,7 +19,6 @@ db_conn = connections.Connection(
     user= DBUSER,
     password= DBPWD, 
     db= DATABASE
-    
 )
 output = {}
 table = 'employee';
