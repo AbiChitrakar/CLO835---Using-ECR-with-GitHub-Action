@@ -109,10 +109,10 @@ jobs:
             INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
 
             # Register with target groups
-            aws elbv2 register-targets --target-group-arn ${{ secrets.BLUE_TG_ARN }} --targets Id=$INSTANCE_ID
+            aws elbv2 register-targets --target-group-arn ${{ secrets.BLUE_TG_ARN }} --targets Id=$INSTANCE_ID,Port=8081
 
-            aws elbv2 register-targets --target-group-arn ${{ secrets.PINK_TG_ARN }} --targets Id=$INSTANCE_ID
+            aws elbv2 register-targets --target-group-arn ${{ secrets.PINK_TG_ARN }} --targets Id=$INSTANCE_ID,Port=8082
 
-            aws elbv2 register-targets --target-group-arn ${{ secrets.LIME_TG_ARN }} --targets Id=$INSTANCE_ID
+            aws elbv2 register-targets --target-group-arn ${{ secrets.LIME_TG_ARN }} --targets Id=$INSTANCE_ID,Port=8083
           
           EOF
