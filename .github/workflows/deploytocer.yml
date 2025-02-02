@@ -82,7 +82,7 @@ jobs:
             echo "Pulling MySQL image from ECR.."
             docker pull ${{ steps.login-ecr.outputs.registry }}/mysql-repo:v0.1
 
-            echo "Pulling WebApp image from ECR..."
+            echo "Pulling WebApp image from ECR."
             docker pull ${{ steps.login-ecr.outputs.registry }}/webapp-repo:v0.1
 
             # Step 3: Create a custom Docker network
