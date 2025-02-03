@@ -99,7 +99,7 @@ jobs:
             echo "Running WebApp container on port 8081..."
             docker run -d --network mynetwork --name webapp-container-1 -p 8081:8080 -e DBHOST=mysql-container -e DBPORT=3306 -e DBUSER=root -e DBPWD=pw -e APP_COLOR=blue -e DATABASE=employees ${{ steps.login-ecr.outputs.registry }}/webapp-repo:v0.1
 
-            echo "Running WebApp container on port 8082..."
+            echo "Running WebApp container on port 8082.."
             docker run -d --network mynetwork --name webapp-container-2 -p 8082:8080 -e DBHOST=mysql-container -e DBPORT=3306 -e DBUSER=root -e DBPWD=pw -e APP_COLOR=pink -e DATABASE=employees ${{ steps.login-ecr.outputs.registry }}/webapp-repo:v0.1
 
             echo "Running WebApp container on port 8083."
